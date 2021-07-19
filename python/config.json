@@ -1,0 +1,33 @@
+{
+  "baseHeight": 6.4,
+  "shoulderOffsetX": -1.1,
+  "shoulderOffsetZ": 3,
+  "armLength": 19,
+  "elbowOffsetX": 1,
+  "elbowOffsetZ": 2,
+  "elbowLength": 17.5,
+
+  "joints": [
+    {
+      "axes": "y",
+      "min": -100,
+      "max": 60,
+      "cor": 100,
+      "inverse": 0
+    },
+    {
+      "axes": "z",
+      "min": -30,
+      "max": 70,
+      "cor": 90,
+      "inverse": 1
+    },
+    {
+      "axes": "z",
+      "min": -140,
+      "max": 40,
+      "cor": 52,
+      "inverse": 1
+    }
+  ]
+}
