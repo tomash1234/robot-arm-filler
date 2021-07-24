@@ -75,7 +75,7 @@ class ArmDriver:
 
     def find_valid_angle(self, interceptions, point, shoulder, base_angle):
         if not self.dim.get_joint(0).is_valid_angle(base_angle):
-            print('No valid angles')
+            print('No valid angles b')
             return None
 
         arm = [interceptions[0] - shoulder[0:2], interceptions[1] - shoulder[0:2]]
@@ -90,7 +90,7 @@ class ArmDriver:
                 shoulder_valid.append(i)
 
         if len(valid_indexes) == 0:
-            print('No valid angles')
+            print('No valid angles s')
             return None
 
         forearm = [point[:2] - interceptions[0], point[:2] - interceptions[1]]
@@ -103,7 +103,7 @@ class ArmDriver:
                 all_valid.append(i)
 
         if len(all_valid) == 0:
-            print('No valid angles')
+            print('No valid angles e')
             return None
 
         chosen_index = all_valid[0]
@@ -135,7 +135,7 @@ class ArmDriver:
                                                    projected_point, self.dim.elbow_l)
 
         if interceptions is None:
-            print('Un reachable point')
+            print('Un reachable point |')
             return None
 
         ret = self.find_valid_angle(interceptions, projected_point, projected_start, base_angle)
