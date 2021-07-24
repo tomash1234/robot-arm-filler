@@ -10,13 +10,13 @@ def draw_circles(image, circles):
             center = (i[0], i[1])
             cv2.circle(image, center, 1, (255, 0, 0), 3)
             radius = i[2]
-            cv2.circle(image, center, radius, (255, 0, 255), 3)
+            cv2.circle(image, center, radius, (255, 255, 0), 3)
 
 
 class CupDetector(Detector):
 
     def __init__(self):
-        super(CupDetector, self).__init__(time_threshold=2, distance_threshold=300)
+        super(CupDetector, self).__init__(time_threshold_lost=2, time_threshold_tracked=2, distance_threshold=300)
         self.MAX_RADIUS = 250
         self.MIN_RADIUS = 50
         self.EDGE_THR = 300

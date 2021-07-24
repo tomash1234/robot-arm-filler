@@ -4,8 +4,9 @@ import numpy as np
 
 class Detector:
 
-    def __init__(self, time_threshold, distance_threshold):
-        self.time_threshold = time_threshold
+    def __init__(self, time_threshold_tracked, time_threshold_lost, distance_threshold):
+        self.time_threshold_tracked = time_threshold_tracked
+        self.time_threshold_lost = time_threshold_lost
         self.distance_threshold = distance_threshold
         self.last_pos = (0, 0, 0)
         self.last_valid_pos = (0, 0, 0)
@@ -14,11 +15,12 @@ class Detector:
         self.known_position = False
 
     def compare_with_last_pos(self, cup):
-        if self.last_pos is None:
-            return
         if cup is None:
-            if time.time() - self.last_detected > self.time_threshold * 2:
+            if time.time() - self.last_detected > self.time_threshold_lost:
                 self.known_position = False
+            return
+
+        if self.last_pos is None:
             return
 
         a = np.array(cup[:2])
@@ -28,8 +30,9 @@ class Detector:
         if dist > self.distance_threshold:
             self.last_time = time.time()
             self.known_position = False
-        elif time.time() - self.last_time > self.time_threshold:
+        elif time.time() - self.last_time > self.time_threshold_tracked:
             self.known_position = True
+            self.last_detected = time.time()
         else:
             self.last_detected = time.time()
 
@@ -37,4 +40,4 @@ class Detector:
         return self.known_position
 
     def get_pos(self):
-        return self.last_valid_cup_pos
+        return self.last_valid_pos
