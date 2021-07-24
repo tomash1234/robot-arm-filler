@@ -14,8 +14,8 @@ class Detector:
         self.last_detected = time.time()
         self.known_position = False
 
-    def compare_with_last_pos(self, cup):
-        if cup is None:
+    def compare_with_last_pos(self, pos):
+        if pos is None:
             if time.time() - self.last_detected > self.time_threshold_lost:
                 self.known_position = False
             return
@@ -23,7 +23,7 @@ class Detector:
         if self.last_pos is None:
             return
 
-        a = np.array(cup[:2])
+        a = np.array(pos[:2])
         b = np.array(self.last_pos[:2])
         dist = np.linalg.norm(a - b)
 
@@ -33,8 +33,10 @@ class Detector:
         elif time.time() - self.last_time > self.time_threshold_tracked:
             self.known_position = True
             self.last_detected = time.time()
+            self.last_valid_pos = pos
         else:
             self.last_detected = time.time()
+            self.last_valid_pos = pos
 
     def is_tracked(self):
         return self.known_position

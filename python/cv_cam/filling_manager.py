@@ -13,5 +13,7 @@ class FillingManager:
 
     def process_pic(self, img):
         self.cup_detector.scan_pic(img)
-        print(self.cup_detector.known_position)
+        self.arm_detector.process(img)
+        print('cup', self.cup_detector.get_pos())
+        print('arm', self.arm_detector.get_pos())
 
