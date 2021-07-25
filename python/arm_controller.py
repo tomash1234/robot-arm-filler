@@ -124,6 +124,18 @@ class ArmDriver:
         deg = np.rad2deg(angle + correction_angle)
         return deg, np.rad2deg(angle)
 
+    def find_angles_with_threshold(self, point,  threshold_y):
+        ret = self.find_angles(point)
+        if ret is None:
+            p = (point[0], point[1]-threshold_y, point[2])
+            ret = self.find_angles(p)
+
+        if ret is None:
+            p = (point[0], point[1]+threshold_y, point[2])
+            ret = self.find_angles(p)
+
+        return ret
+
     def find_angles(self, point):
         base_angle, raw_angle = self.find_base_rotation(point)
         shoulder_pos = self.kim.calculate_shoulder_pos(base_angle, 'xy')
