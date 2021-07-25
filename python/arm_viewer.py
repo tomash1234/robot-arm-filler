@@ -13,7 +13,7 @@ class ArmViewer:
         self.com = communicator
         self.driver = driver
 
-        fig, (self.ax2, self.ax) = plt.subplots(1, 2)
+        self.fig, (self.ax2, self.ax) = plt.subplots(1, 2)
         plt.subplots_adjust(bottom=0.25)
 
         self.ax.axis('equal')
@@ -30,22 +30,7 @@ class ArmViewer:
         self.raw_angle = 0
         self.pump_running = False
 
-        self.init_sliders(fig)
-
-        # Button
-        ax_button = fig.add_axes([0.60, 0.10, 0.30, 0.06])
-        button_pump = Button(ax_button, 'START PUMP')
-
-        def on_button_click(event):
-            self.pump_running = not self.pump_running
-            if self.pump_running:
-                button_pump.label.set_text('STOP PUMP')
-            else:
-                button_pump.label.set_text('START PUMP')
-
-            self.com.send_pump(self.pump_running)
-
-        button_pump.on_clicked(on_button_click)
+        self.init_sliders(self.fig)
 
         def onclick(event):
             ix, iy = event.xdata, event.ydata
@@ -62,8 +47,7 @@ class ArmViewer:
 
                 self.target_new_point(point)
 
-        fig.canvas.mpl_connect('button_press_event', onclick)
-        plt.show()
+        self.fig.canvas.mpl_connect('button_press_event', onclick)
 
     def target_new_point(self, point):
         ret = self.driver.find_angles(point)
@@ -187,3 +171,6 @@ class ArmViewer:
         self.base_angle = base
         self.shoulder_angle = shoulder
         self.elbow_angle = elbow
+
+    def show(self):
+        plt.show()

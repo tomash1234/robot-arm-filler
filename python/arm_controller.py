@@ -23,6 +23,8 @@ class ArmCommunicator:
         self.port2 = port
 
     def send_pump(self, on):
+        if self.address2 is None:
+            return
         mes = [255 if on else 0]
         print(mes, self.address2, self.port2)
         self.socket.sendto(bytes(mes), (self.address2, self.port2))
@@ -135,14 +137,14 @@ class ArmDriver:
         deg = np.rad2deg(angle + correction_angle)
         return deg, np.rad2deg(angle)
 
-    def find_angles_with_threshold(self, point,  threshold_y):
+    def find_angles_with_threshold(self, point, threshold_y):
         ret = self.find_angles(point)
         if ret is None:
-            p = (point[0], point[1]-threshold_y, point[2])
+            p = (point[0], point[1] - threshold_y, point[2])
             ret = self.find_angles(p)
 
         if ret is None:
-            p = (point[0], point[1]+threshold_y, point[2])
+            p = (point[0], point[1] + threshold_y, point[2])
             ret = self.find_angles(p)
 
         return ret
@@ -152,7 +154,7 @@ class ArmDriver:
         shoulder_pos = self.kim.calculate_shoulder_pos(base_angle, 'xy')
 
         projected_start = np.array([self.dim.shoulder_o, self.dim.base_h])
-        projected_point = convert_point_2_local_slice(point, base_angle-raw_angle)
+        projected_point = convert_point_2_local_slice(point, base_angle - raw_angle)
         interceptions = find_circles_interceptions(projected_start,
                                                    self.dim.arm_radius,
                                                    projected_point, self.dim.elbow_l)
@@ -168,9 +170,8 @@ class ArmDriver:
         angles = ret[:3]
 
         print('Found', angles)
-        ret = {'angles': angles,  'shoulder': shoulder_pos, 'raw_base': raw_angle}
+        ret = {'angles': angles, 'shoulder': shoulder_pos, 'raw_base': raw_angle}
         return ret
-
 
     def convert_angles(self, angles):
         base = self.dim.get_joint(0).convert_angle(angles[0])
