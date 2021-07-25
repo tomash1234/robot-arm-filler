@@ -13,8 +13,19 @@ class ArmCommunicator:
     def __init__(self, ip_address, port=5051):
         self.address = ip_address
         self.port = port
+        self.address2 = None
+        self.port2 = None
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def set_pump_ip(self, ip_address, port=5051):
+        self.address2 = ip_address
+        self.port2 = port
+
+    def send_pump(self, on):
+        mes = [255 if on else 0]
+        print(mes, self.address2, self.port2)
+        self.socket.sendto(bytes(mes), (self.address2, self.port2))
 
     def set_angle(self, servo, angle):
         angle = max(0, min(angle, 180))

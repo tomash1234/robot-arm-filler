@@ -74,3 +74,12 @@ class PosFinder:
 
         self.last_pos = (new_x[0], self.x0[1], new_x[1])
         return self.last_pos
+
+    def reset(self, init_pose):
+        self.last_pos = init_pose
+        self.change = np.array([0, 0])
+        self.state = PREPARE
+        self.x0 = init_pose
+        self.dx = None
+        self.dy = None
+        pass

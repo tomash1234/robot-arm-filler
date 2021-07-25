@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
+from matplotlib.widgets import Slider, Button
 
 import matplotlib.patches as patches
 from arm_controller import convert_point_2_local_slice, convert_local_slice_2_point
@@ -28,8 +28,24 @@ class ArmViewer:
         self.click_z = 0
         self.base_angle_val = 0
         self.raw_angle = 0
+        self.pump_running = False
 
         self.init_sliders(fig)
+
+        # Button
+        ax_button = fig.add_axes([0.60, 0.10, 0.30, 0.06])
+        button_pump = Button(ax_button, 'START PUMP')
+
+        def on_button_click(event):
+            self.pump_running = not self.pump_running
+            if self.pump_running:
+                button_pump.label.set_text('STOP PUMP')
+            else:
+                button_pump.label.set_text('START PUMP')
+
+            self.com.send_pump(self.pump_running)
+
+        button_pump.on_clicked(on_button_click)
 
         def onclick(event):
             ix, iy = event.xdata, event.ydata
