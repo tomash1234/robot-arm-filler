@@ -4,8 +4,8 @@ import numpy as np
 
 from arm_controller import ArmDriver, ArmCommunicator
 
-from cup_detector import CupDetector
-from arm_end_detector import ArmEndDetector
+from detectors import CupDetector
+from detectors import ArmEndDetector
 from python.arm_dimensions import ArmDimensionsJson
 from python.pos_finder import PosFinder
 

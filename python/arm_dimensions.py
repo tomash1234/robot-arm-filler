@@ -73,7 +73,7 @@ class ArmDimensions:
     For further parts description see readme and picture in doc folder.
 
     Attributes:
-        base_b:     a float representing the base
+        base_h:     a float representing the base
         shoulder_o:
         arm_l:
         shoulder offset:
