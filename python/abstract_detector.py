@@ -7,7 +7,7 @@ Abstract Detector module
  to determined whether the object is detected or not.
 
 
- https://github.com/tomash1234/robot-arm-fillter
+ https://github.com/tomash1234/robot-arm-filler
 """
 
 import time
