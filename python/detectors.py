@@ -14,7 +14,23 @@ import time
 import numpy as np
 import cv2
 
-from python.utils import draw_circles
+
+def draw_circles(image, circles, color=(255, 255, 0)):
+    """Function to draw circles into the image
+
+    Args:
+        image:  cv2 image, image to draw circles into
+        circles:    [(cx, cy, radius), ..] circles to draw
+        color:  color of circles
+
+    """
+    if circles is not None:
+        circles = np.uint16(np.around(circles))
+        for i in circles[0, :]:
+            center = (i[0], i[1])
+            cv2.circle(image, center, 1, (255, 0, 0), 3)
+            radius = i[2]
+            cv2.circle(image, center, radius, color, 3)
 
 
 class Detector:
