@@ -26,7 +26,7 @@ class FillingManager:
         self.cup_detector = CupDetector()
         self.arm_detector = ArmEndDetector()
         self.driver = ArmDriver(dim)
-        self.arm_com = ArmCommunicator('192.168.137.156', 5101)
+        self.arm_com = ArmCommunicator('192.168.137.74', 5101)
 
         self.filled = True
         self.was_valid = True
