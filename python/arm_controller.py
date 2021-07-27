@@ -1,16 +1,36 @@
+"""
+Arm Controller Module
+
+    This module contains classes to communication with the board and basic inverse kinematics.
+
+    https://github.com/tomash1234/robot-arm-filler
+"""
+
 import socket
 import numpy as np
 
 from kinematics import Kinematics
 
+""" Servo motors indexes """
 SERVO_BASE = 0
 SERVO_SHOULDER = 1
 SERVO_ELBOW = 2
 
 
 class ArmCommunicator:
+    """ Arm Communicator allows to send UDP packets to the board.
+
+    Attributes:
+        address:    string, IP address of the board
+        port:       integer, board port for communication
+        address2:   string, IP address of the second board (pump controller)
+        port2:      integer, board port for communication with the second board (pump controller)
+
+        socket:     socket for UPD communication
+    """
 
     def __init__(self, ip_address, port=5051):
+        """ Inits the instance with ip address of board and its port"""
         self.address = ip_address
         self.port = port
         self.address2 = None
@@ -19,26 +39,36 @@ class ArmCommunicator:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def set_pump_ip(self, ip_address, port=5051):
+        """Sets the second board (pump controller) address and its port"""
         self.address2 = ip_address
         self.port2 = port
 
     def send_pump(self, on):
+        """Starts / Stops pump. Sends UDP packet to the second board
+        Args:
+            on:     boolean, True turns the pump on and False turns it off
+        """
         if self.address2 is None:
             return
         mes = [255 if on else 0]
         print(mes, self.address2, self.port2)
         self.socket.sendto(bytes(mes), (self.address2, self.port2))
 
-    def set_angle(self, servo, angle):
-        angle = max(0, min(angle, 180))
-        mes = [servo, angle]
-        self.send_packet(mes)
-
     def send_angles(self, angles):
+        """Sends all angles to the board which should set the servos
+         to the specific angles. Angles are in degrees in the range [0, 255]
+
+         Args:
+             angles:    list of 3 integers, [base angle, shoulder angle, elbow angle] in degrees
+         """
         self.send_packet(angles)
 
-    def send_packet(self, mes):
-        self.socket.sendto(bytes(mes), (self.address, self.port))
+    def send_packet(self, message):
+        """Sends message to the first board (address and port from contractor)
+        Args:
+            message:    list of byte values
+        """
+        self.socket.sendto(bytes(message), (self.address, self.port))
 
 
 def find_circles_interceptions(c1, r1, c2, r2):
