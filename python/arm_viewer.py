@@ -1,14 +1,25 @@
+""" Arm Viewer Module
+
+ This module implements basic GUI to control the roboarm and the pump.
+
+ Clicking on the plot automatically calculate angles to reach this destination
+
+ https://github.com/tomash1234/robot-arm-filler
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider
 
 import matplotlib.patches as patches
 from arm_controller import convert_point_2_local_slice, convert_local_slice_2_point
 
 
 class ArmViewer:
+    """ Class representing Arm Viewer window """
 
     def __init__(self, dim, driver, communicator):
+        """Inits viewer with arm dimension, arm driver and communicator from arguments."""
         self.dim = dim
         self.com = communicator
         self.driver = driver
@@ -50,6 +61,12 @@ class ArmViewer:
         self.fig.canvas.mpl_connect('button_press_event', onclick)
 
     def target_new_point(self, point):
+        """ Set arm angles to reach the point
+        If the destination point is unreachable, nothing happens
+
+        Args:
+            point:  destination 3D point
+        """
         ret = self.driver.find_angles(point)
         if ret is not None:
             angles = ret['angles']
@@ -67,6 +84,7 @@ class ArmViewer:
         self.slider_elbow.reset()
 
     def robot_arm_value_changed(self, angles):
+        """Updates robot arm views and sliders"""
         self.com.send_angles(self.driver.convert_angles(angles))
         points = self.driver.get_points(angles)
 

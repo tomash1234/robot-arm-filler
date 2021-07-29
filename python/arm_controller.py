@@ -72,6 +72,18 @@ class ArmCommunicator:
 
 
 def find_circles_interceptions(c1, r1, c2, r2):
+    """Finds interceptions of two circles.
+
+    Args:
+        c1: center of the first circle (x, y)
+        r1: float, radius of the first circle
+        c2: center of the second circle (x, y)
+        r2: float, radius of the second circle
+
+    Returns:
+        list of interceptions or None if there is no interceptions
+
+    """
     R = np.linalg.norm(c2 - c1)
     if R > r1 + r2:
         return None
@@ -91,6 +103,15 @@ def find_circles_interceptions(c1, r1, c2, r2):
 
 
 def angles_bet_vec(u, v):
+    """Find signed angle between two vectors
+    Args:
+        u:  vector 1
+        v:  vector 2
+
+    Returns:
+        float, signed angle in radians
+
+    """
     if u[1] - v[1] == 0:
         sign = 1
     else:
@@ -112,7 +133,16 @@ def convert_local_slice_2_point(raw_angle, x, y):
 
 class ArmDriver:
 
+    """ Arm Driver class implements basic inverse kinematics function
+        and also calculates position of arm end based on given angles.
+
+    Attributes:
+        dim:    ArmDimensions, dimensions of arm
+        kim:    Kinematics, instance of kinematics class
+    """
+
     def __init__(self, dimensions):
+        """Inits Arm Driver instance from given dimensions"""
         self.dim = dimensions
         self.kim = Kinematics(dimensions)
 
@@ -154,12 +184,26 @@ class ArmDriver:
             chosen_index]
 
     def get_points(self, angles):
+        """Returns the list of 3D points corresponding with
+            shoulder position, end of arm, elbow position and tip of roboarm
+        Args:
+              angles:   list of 3 angles in degress [base_angle, shoulder angle, elbow angle]
+        Returns:
+              list of 3D position of shoulder pos, arm end, elbow and end of roboarm
+        """
         base = np.deg2rad(angles[0])
         shoulder = np.deg2rad(angles[1])
         elbow = np.deg2rad(angles[2])
         return self.kim.calculate(base, shoulder, elbow)
 
     def find_base_rotation(self, point):
+        """Find angle of base servo to reach point
+        Args:
+            point:  destination point
+        Returns:
+            angle in degrees with and without correction
+            (angle + correction, angle)
+        """
         point2d = np.array([point[0], point[2]])
         dis_x = self.dim.shoulder_h_o + self.dim.elbow_h_o
         correction_angle = np.arctan(dis_x / np.linalg.norm(point2d))
@@ -168,6 +212,14 @@ class ArmDriver:
         return deg, np.rad2deg(angle)
 
     def find_angles_with_threshold(self, point, threshold_y):
+        """Find all 3 angles to reach destination point but allows threshold in y axis
+        Args:
+            point:  (x, y, z) destination point
+            threshold_y:    float, threshold in y axis
+        Returns:
+            Dictionary where the keys are angles, shoulder, raw_angle and values are the angles,
+            shoulder position and raw angle withou correction
+        """
         ret = self.find_angles(point)
         if ret is None:
             p = (point[0], point[1] - threshold_y, point[2])
@@ -180,6 +232,14 @@ class ArmDriver:
         return ret
 
     def find_angles(self, point):
+        """Finds angles for all 3 servos to reach the destination point
+        Args:
+            point:  (x, y, z) destination point
+        Returns:
+            Dictionary where keys are angles, shoulder, raw_angle and values
+            are a list of angles in degrees, shoulder position (x, y, z) and angle without correction
+
+        """
         base_angle, raw_angle = self.find_base_rotation(point)
         shoulder_pos = self.kim.calculate_shoulder_pos(base_angle, 'xy')
 
@@ -204,6 +264,12 @@ class ArmDriver:
         return ret
 
     def convert_angles(self, angles):
+        """Converts angles to angles ready to send into the board
+        Args:
+            angles: list of 3 float angles in degrees
+        Returns:
+             list of integer angles ready for the board
+        """
         base = self.dim.get_joint(0).convert_angle(angles[0])
         shoulder = self.dim.get_joint(1).convert_angle(angles[1])
         elbow = self.dim.get_joint(2).convert_angle(angles[2])
