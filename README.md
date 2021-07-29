@@ -29,3 +29,7 @@ which is connected via WiFi to laptop, where a python script is running.
 * Numpy
 * OpenCV
 * Matplotlib 
+
+## Arm Dimensions
+
+<img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/dimensions.jpg" width="600">
