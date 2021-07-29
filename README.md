@@ -5,7 +5,7 @@ And you have no other option than to stand up and walk to get a new drink?
 If you reply yes to both of these questions I got a solution for you
 **Auto Robotic Cup Filler**
 
-![Alt Text](https://github.com/tomash1234/robot-arm-filler/blob/main/doc/overview_small.png =400x)
+<img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/overview_small.png" width="300">
 
 A python script running on your laptop is scanning the table using a webcamera.
 Once an empty cup is detected, the robotic arm, with a hose connected 
