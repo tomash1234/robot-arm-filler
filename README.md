@@ -11,25 +11,41 @@ A python script running on your laptop is scanning the table using a webcamera.
 Once an empty cup is detected, the robotic arm, with a hose connected 
 to a pump in tank with your favourite liquid, quickly moves and fills your cup. 
 
+## Viewer
+
+## How to Install & Run
+* Build or buy a Robo Arm, measure its dimensions and write them into
+  the config file (**config.json**)
+* Clone this repository
+* Find Arduino sketch (sketch_robo_arm, sketch_pump_controller and upload it to your board
+* Download python and required packages (SEE: dependencies)
+
+* Connect the board and laptop to same WiFi network 
+  (I use a hotspot on my laptop)
+    
+* Set the board IP address and port into **main.py** file and **webc.py**  
+* Run **main.py** to start GUI (without autofilling) OR 
+* Connect your webcam to see the desk and run **webcam.py** script
+
+### Dependencies
+* Numpy   `pip install numpy`
+* OpenCV  `pip install opencv-python`
+* Matplotlib  `pip install matplotlib`
 
 
-## Hardware
+### Hardware
 
 The Robo-arm is made of 3 servos, wooden sticks and hot glue. 
 
 
-Arm and pump is controlled using an esp-8266 board (Wemos D1 R2), 
+The Arm and pump is controlled using an esp-8266 board (Wemos D1 R2), 
 which is connected via WiFi to laptop, where a python script is running.
 
 
-## How to Install
+### Arm Dimensions
 
-
-## Dependencies
-* Numpy
-* OpenCV
-* Matplotlib 
-
-## Arm Dimensions
+The Arm dimensions are stored in JSON file **config.json**,
+write dimensions of your robo arm in this file.
 
 <img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/dimensions.jpg" width="600">
+
