@@ -13,6 +13,7 @@ to a pump in tank with your favourite liquid, quickly moves and fills your cup.
 
 ## Viewer
 I implemented a simple robot arm viewer and controller. So you can test if everything is setup corrected.
+You can click on the plot and the angles needed to reach this position will be calculated
 <img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/viewer.gif" width="500">
 
 ## How to Install & Run
@@ -51,3 +52,22 @@ write dimensions of your robo arm in this file.
 
 <img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/dimensions.jpg" width="600">
 
+## How does it work
+
+### Cup detector
+The Cup detector is a simple circle detector ([Hough circle transform](https://docs.opencv.org/4.5.2/da/d53/tutorial_py_houghcircles.html)) .
+
+The parameters of detector are set up to work for me, so if you have 
+a problem with the cup detection, try to adjust these parameters (CupDetector in detectors.py)
+
+
+### End of arm detector
+
+On the end of arm a circular marker is placed. The marker can be detected in same way as a cup, using Hough circle detector.
+
+Again, if you have a problem with the detection, try to adjust the circle parameters.
+
+<img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/marker.png" alt="Marker" width="200">
+
+
+### Moving towards cup
