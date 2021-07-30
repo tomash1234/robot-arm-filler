@@ -17,9 +17,9 @@ You can click on the plot and the angles needed to reach this position will be c
 <img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/viewer.gif" width="500">
 
 ## How to Install & Run
+* Clone this repository
 * Build or buy a Robo Arm, measure its dimensions and write them into
   the config file (**config.json**)
-* Clone this repository
 * Find Arduino sketch (sketch_robo_arm, sketch_pump_controller and upload it to your board
 * Download python and required packages (SEE: dependencies)
 
@@ -63,11 +63,8 @@ a problem with the cup detection, try to adjust these parameters (CupDetector in
 
 ### End of arm detector
 
-On the end of arm a circular marker is placed. The marker can be detected in same way as a cup, using Hough circle detector.
+There is a circular marker on the end of arm. The marker can be detected in same way as a cup, using Hough circle detector.
 
 Again, if you have a problem with the detection, try to adjust the circle parameters.
 
 <img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/marker.png" alt="Marker" width="200">
-
-
-### Moving towards cup
