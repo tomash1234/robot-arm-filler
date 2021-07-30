@@ -5,7 +5,7 @@
   "armLength": 19,
   "elbowOffsetX": 1,
   "elbowOffsetZ": 2,
-  "elbowLength": 17.5,
+  "forearmLength": 17.5,
 
   "joints": [
     {

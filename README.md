@@ -12,6 +12,8 @@ Once an empty cup is detected, the robotic arm, with a hose connected
 to a pump in tank with your favourite liquid, quickly moves and fills your cup. 
 
 ## Viewer
+I implemented a simple robot arm viewer and controller. So you can test if everything is setup corrected.
+<img src="https://github.com/tomash1234/robot-arm-filler/blob/main/doc/viewer.gif" width="500">
 
 ## How to Install & Run
 * Build or buy a Robo Arm, measure its dimensions and write them into

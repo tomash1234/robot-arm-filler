@@ -128,4 +128,4 @@ class ArmDimensionsJson(ArmDimensions):
 
         super(ArmDimensionsJson, self).__init__(data['baseHeight'], data['shoulderOffsetX'], data['shoulderOffsetZ'],
                                                 data['armLength'], data['elbowOffsetX'], data['elbowOffsetZ'],
-                                                data['elbowLength'], joints)
+                                                data['forearmLength'], joints)
