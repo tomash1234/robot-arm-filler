@@ -1,3 +1,10 @@
+"""Main module
+
+  Run this module if you want to start GUI Arm Viewer
+
+  https://github.com/tomash1234/robot-arm-filler
+"""
+
 from matplotlib.widgets import Button
 
 from arm_controller import ArmDriver
@@ -7,6 +14,7 @@ from arm_controller import ArmCommunicator
 
 
 def add_pump_button(view, com):
+    """Add a pump button to the viewer"""
     ax_button = view.fig.add_axes([0.60, 0.10, 0.30, 0.06])
     button_pump = Button(ax_button, 'START PUMP')
 

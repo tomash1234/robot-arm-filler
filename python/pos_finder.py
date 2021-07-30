@@ -1,13 +1,35 @@
+"""Position finder module
+
+This module implements basic algorithm to find relative location of cup suspect to roboarm.
+Two basis vectors are estimated using moving arm in two directions
+and calculating difference in image.
+
+  https://github.com/tomash1234/robot-arm-filler
+"""
+
 import numpy as np
 import time
 
+"""States of estimating position"""
 PREPARE = 0
 DER_X = 1
 DER_Y = 2
+
+"""Delta in same units as arm dimensions (centimeters in my case)"""
 DELTA = 2
 
 
 def check_distance(marker, cup, thr):
+    """Returns distance between cup and marker.
+    If distance is less than threshold, it returns 0.
+
+    Args:
+        marker: (x, y, z) position of marker
+        cup: (x, y, z) position of cup
+        thr: float, threshold
+    Returns:
+        distance in same units as arm dimensions
+    """
     marker = np.array([marker[:2]])
     cup = np.array([cup[:2]])
     dist = np.linalg.norm(marker - cup)
@@ -19,7 +41,13 @@ def check_distance(marker, cup, thr):
 
 class PosFinder:
 
+    """Class to estimate relative position of cup suspect to robo arm poisiton"""
+
     def __init__(self, init_pose):
+        """Inits Pos Finder class with initial position
+        Args:
+            init_pose   (x, y, z) init position
+        """
         self.last_pos = init_pose
         self.change = np.array([0, 0])
         self.state = PREPARE
@@ -32,6 +60,12 @@ class PosFinder:
         self.last_reachable_pos = self.last_pos
 
     def iteration(self, cup, marker, valid):
+        """Call thhis method every iteration
+        Args:
+            cup:    (x, y) position of cup in the image
+            marker:    (x, y) position of marker in the image
+            valid:  boolean if the previous position was valid
+        """
         if valid:
             self.last_reachable_pos = self.last_pos
 
@@ -46,6 +80,14 @@ class PosFinder:
         return self.estimate_vectors(cup, marker), False
 
     def estimate_vectors(self, cup, marker):
+        """Estimate basis vector by moving arm into two direction and calculating
+         the difference between 2d position detected in the image .
+        Args:
+            cup:    (x, y) position of cup in the image
+            marker:    (x, y) position of marker in the image
+        Returns:
+            Returns 3D position (x, y, z) where the arm should move next time
+        """
         if self.state == PREPARE:
             self.cup0 = np.array([cup[0], cup[1]])
             self.marker0 = np.array([marker[0], marker[1]])
@@ -65,6 +107,13 @@ class PosFinder:
             return self.quick_pos(self.cup0, self.marker0)
 
     def quick_pos(self, cup, marker):
+        """Calculate position after estimating basis vectors
+        Args:
+            cup:    (x, y) position of cup in the image
+            marker:    (x, y) position of marker in the image
+        Returns:
+            Returns 3D position (x, y, z) where the arm should move
+        """
         cup0 = np.array([cup[0], cup[1]])
         marker0 = np.array([marker[0], marker[1]])
         diff = cup0 - marker0
@@ -76,6 +125,10 @@ class PosFinder:
         return self.last_pos
 
     def reset(self, init_pose):
+        """Reset state to the initial state
+        Args:
+            init_pose:  (x, y, z), initial position
+        """
         self.last_pos = init_pose
         self.change = np.array([0, 0])
         self.state = PREPARE
