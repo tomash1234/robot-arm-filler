@@ -65,6 +65,15 @@ class FillingManager:
 
         self.rest_pose()
 
+    def set_pump_address(self, address, port):
+        """Sets address of the pump controller board
+        Args:
+            address:    ip address
+            port:   integer, port
+        """
+        self.arm_com.set_pump_ip(address, port)
+        self.arm_com.send_pump(False)
+
     def process_pic(self, img):
         """Process image from webcamera
         Args:
@@ -108,6 +117,7 @@ class FillingManager:
         """Put the tip of arm into cup and starts pump"""
         angles = [self.angles[0], self.angles[1], self.angles[2] - 15]
         self.arm_com.send_angles(self.driver.convert_angles(angles))
+        self.arm_com.send_pump(True)
 
         self.filling_time = time.time()
         self.state = STATE_FILLING
@@ -115,6 +125,8 @@ class FillingManager:
     def filling(self):
         """Method called every iteration in filling state"""
         if time.time() - self.filling_time > self.FILLING_TIME:
+            self.arm_com.send_pump(False)
+            time.sleep(2)
             self.filling_time = time.time()
             self.state = STATE_STOPPING
 

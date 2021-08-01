@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     communicator = ArmCommunicator('192.168.137.156', 5101)
 
-    communicator.set_pump_ip('192.168.137.47', 5101)
+    communicator.set_pump_ip('192.168.137.2', 5101)
     communicator.send_pump(False)
 
     driver = ArmDriver(dim)

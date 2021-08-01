@@ -20,7 +20,9 @@ def show_webcam(mirror=False, device=0):
     cam = cv2.VideoCapture(device)
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-    filling_manger = FillingManager('192.168.137.74', 5101)
+    filling_manger = FillingManager('192.168.137.235', 5101)
+    filling_manger.set_pump_address('192.168.137.2', 5101)
+
     while True:
         ret_val, img = cam.read()
         if mirror:
