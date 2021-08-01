@@ -46,7 +46,7 @@ class FillingManager:
             dimension_file: path to json where the arm dimensions are defined
         """
         self.CUP_HEIGHT = 14
-        self.FILLING_TIME = 5
+        self.FILLING_TIME = 10
 
         dim = ArmDimensionsJson(dimension_file)
         self.cup_detector = CupDetector()
@@ -66,13 +66,8 @@ class FillingManager:
         self.rest_pose()
 
     def set_pump_address(self, address, port):
-        """Sets address of the pump controller board
-        Args:
-            address:    ip address
-            port:   integer, port
-        """
+        """Sets address of port controller """
         self.arm_com.set_pump_ip(address, port)
-        self.arm_com.send_pump(False)
 
     def process_pic(self, img):
         """Process image from webcamera
@@ -117,16 +112,16 @@ class FillingManager:
         """Put the tip of arm into cup and starts pump"""
         angles = [self.angles[0], self.angles[1], self.angles[2] - 15]
         self.arm_com.send_angles(self.driver.convert_angles(angles))
-        self.arm_com.send_pump(True)
 
         self.filling_time = time.time()
+        self.arm_com.send_pump(True)
         self.state = STATE_FILLING
 
     def filling(self):
         """Method called every iteration in filling state"""
         if time.time() - self.filling_time > self.FILLING_TIME:
             self.arm_com.send_pump(False)
-            time.sleep(2)
+            time.sleep(3)
             self.filling_time = time.time()
             self.state = STATE_STOPPING
 
