@@ -1,7 +1,7 @@
 # Auto Cup Filler
 
-[![Youtube video](https://img.youtube.com/vi/q4_bpxAipl8/0.jpg)](https://www.youtube.com/watch?v=q4_bpxAipl8)
 Check this YouTube video: https://youtu.be/q4_bpxAipl8
+
 
 Have you ever been working on your computer and suddenly your cup of coffee was empty? 
 And you have no other option than to stand up and walk to get a new drink?
